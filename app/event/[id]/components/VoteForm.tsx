@@ -8,12 +8,33 @@ interface VoteFormProps {
     votes: Vote[];
     eventId: string;
     onVoteSubmit: (userName: string, selectedDates: Set<string>) => Promise<void>;
+    initialUserName?: string;
 }
 
-export default function VoteForm({ event, votes, eventId, onVoteSubmit }: VoteFormProps) {
-    const [userName, setUserName] = useState('');
+export default function VoteForm({
+    event,
+    votes,
+    eventId,
+    onVoteSubmit,
+    initialUserName = ''
+}: VoteFormProps) {
+    const [userName, setUserName] = useState(initialUserName);
     const [selectedDates, setSelectedDates] = useState<Set<string>>(new Set());
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Auto-load schedule if initialUserName is provided (e.g., when clicking 'Edit' after voting)
+    useEffect(() => {
+        if (initialUserName) {
+            const existingVotes = votes
+                .filter((v) => v.user_name === initialUserName)
+                .map((v) => v.available_date);
+
+            if (existingVotes.length > 0) {
+                setSelectedDates(new Set(existingVotes));
+            }
+        }
+    }, [initialUserName, votes]);
+
 
     const allDates = eachDayOfInterval({
         start: parseISO(event.date_range_start),

@@ -26,6 +26,7 @@ export default function EventPage() {
 
     const [copied, setCopied] = useState(false);
     const [showVoteForm, setShowVoteForm] = useState(true);
+    const [lastVoterName, setLastVoterName] = useState('');
 
     const handleCopyLink = () => {
         navigator.clipboard.writeText(window.location.href);
@@ -56,6 +57,7 @@ export default function EventPage() {
             // Immediate refresh
             await fetchEventAndVotes();
 
+            setLastVoterName(userName);
             alert('투표가 반영되었습니다! 🎉');
             setShowVoteForm(false);
         } catch (error) {
@@ -97,6 +99,7 @@ export default function EventPage() {
                         votes={votes}
                         eventId={eventId}
                         onVoteSubmit={handleVoteSubmit}
+                        initialUserName={lastVoterName}
                     />
                 ) : (
                     <VoteCompleted onEdit={() => setShowVoteForm(true)} />
