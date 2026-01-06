@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { type Vote } from '@/lib/supabase';
@@ -16,9 +15,6 @@ export default function DateSelector({
     votes,
     onDateToggle
 }: DateSelectorProps) {
-    const [isDragging, setIsDragging] = useState(false);
-    const [dragMode, setDragMode] = useState<'select' | 'deselect' | null>(null);
-
     // Group dates by month
     const groupedDates = allDates.reduce((acc, date) => {
         const monthKey = format(date, 'yyyy년 M월', { locale: ko });
@@ -29,46 +25,10 @@ export default function DateSelector({
         return acc;
     }, {} as Record<string, Date[]>);
 
-    useEffect(() => {
-        const handleGlobalMouseUp = () => {
-            setIsDragging(false);
-            setDragMode(null);
-        };
-        window.addEventListener('mouseup', handleGlobalMouseUp);
-        return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
-    }, []);
-
-    const handleMouseDown = (e: React.MouseEvent, dateStr: string, isSelected: boolean) => {
-        // Only enable drag on desktop (not touch devices)
-        if (e.type !== 'mousedown') return;
-        
-        setIsDragging(true);
-        const mode = isSelected ? 'deselect' : 'select';
-        setDragMode(mode);
-        onDateToggle(dateStr);
-    };
-
-    const handleMouseEnter = (dateStr: string, isSelected: boolean) => {
-        if (!isDragging || !dragMode) return;
-
-        if (dragMode === 'select' && !isSelected) {
-            onDateToggle(dateStr);
-        } else if (dragMode === 'deselect' && isSelected) {
-            onDateToggle(dateStr);
-        }
-    };
-
-    const handleClick = (dateStr: string) => {
-        // Simple click toggle for touch devices
-        if (!isDragging) {
-            onDateToggle(dateStr);
-        }
-    };
-
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
     return (
-        <div className="space-y-6 select-none">
+        <div className="space-y-6">
             <label className="block text-sm font-bold text-gray-700 mb-1">
                 가능한 날짜 선택
             </label>
@@ -107,9 +67,7 @@ export default function DateSelector({
                                 return (
                                     <div
                                         key={dateStr}
-                                        onMouseDown={(e) => handleMouseDown(e, dateStr, isSelected)}
-                                        onMouseEnter={() => handleMouseEnter(dateStr, isSelected)}
-                                        onClick={() => handleClick(dateStr)}
+                                        onClick={() => onDateToggle(dateStr)}
                                         className={`date-cell aspect-square flex items-center justify-center ${isSelected ? 'selected' : 'unselected'} cursor-pointer`}
                                     >
                                         <div className="text-center pointer-events-none">
