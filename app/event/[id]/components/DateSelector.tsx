@@ -70,7 +70,7 @@ export default function DateSelector({
     return (
         <div className="space-y-6 select-none">
             <label className="block text-sm font-bold text-gray-700 mb-1">
-                가능한 날짜 선택 (드래그 가능)
+                가능한 날짜 선택
             </label>
 
             {Object.entries(groupedDates).map(([month, dates]) => {
