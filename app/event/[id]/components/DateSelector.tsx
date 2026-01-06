@@ -36,7 +36,7 @@ export default function DateSelector({
                     <h3 className="text-lg font-bold text-purple-700 border-b border-purple-100 pb-1 mt-4">
                         {month}
                     </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 gap-2">
                         {dates.map((date) => {
                             const dateStr = format(date, 'yyyy-MM-dd');
                             const isSelected = selectedDates.has(dateStr);
@@ -50,12 +50,12 @@ export default function DateSelector({
                                     className={`date-cell ${isSelected ? 'selected' : 'unselected'}`}
                                 >
                                     <div className="text-center">
-                                        <p className="text-xs opacity-70">
+                                        <p className="text-[10px] opacity-70 leading-none mb-1">
                                             {format(date, 'EEE', { locale: ko })}
                                         </p>
-                                        <p className="text-lg font-bold">{format(date, 'd')}</p>
+                                        <p className="text-base font-bold leading-none">{format(date, 'd')}</p>
                                         {voteCount > 0 && (
-                                            <p className="text-xs mt-1 opacity-80">{voteCount}명</p>
+                                            <p className="text-[10px] mt-1 opacity-80 font-medium">{voteCount}명</p>
                                         )}
                                     </div>
                                 </button>

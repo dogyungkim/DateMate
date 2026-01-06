@@ -69,19 +69,19 @@ export default function VoteForm({ event, votes, eventId, onVoteSubmit }: VoteFo
     };
 
     return (
-        <div className="glass-card p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">투표하기</h2>
+        <div className="glass-card">
+            <h2 className="text-xl font-bold text-gray-800 mb-6">🗓️ 투표하기</h2>
 
-            <div className="mb-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    당신의 이름
+            <div className="mb-8">
+                <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
+                    참여자 성함
                 </label>
                 <input
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     placeholder="예: 홍길동"
-                    className="w-full px-4 py-3 bg-white/70 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-4 bg-white/70 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all text-lg shadow-sm placeholder:text-gray-400"
                 />
             </div>
 
@@ -94,12 +94,14 @@ export default function VoteForm({ event, votes, eventId, onVoteSubmit }: VoteFo
 
             <button
                 onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="btn-gradient w-full mt-6 disabled:opacity-50"
+                disabled={isSubmitting || !userName.trim()}
+                className="btn-gradient w-full mt-10 py-4 text-lg font-bold disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed active:scale-95 transition-all"
             >
-                {isSubmitting ? '제출 중...' : '투표하기 ✨'}
+                {isSubmitting ? '제출 중...' : '투표 반영하기 ✨'}
             </button>
+
         </div>
+
     );
 }
 

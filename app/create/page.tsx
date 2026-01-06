@@ -59,21 +59,20 @@ export default function CreateEvent() {
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="glass-card p-8 max-w-xl w-full">
+            <div className="glass-card max-w-lg w-full">
                 {/* Header */}
-                <div className="flex items-center mb-6">
+                <div className="flex items-center mb-8">
                     <button
                         onClick={() => router.back()}
-                        className="mr-4 p-2 rounded-lg hover:bg-white/50 transition-colors"
+                        className="mr-3 p-2 rounded-xl hover:bg-white/50 transition-colors bg-white/30"
                     >
                         <ArrowLeft className="w-5 h-5 text-gray-700" />
                     </button>
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                            <Calendar className="w-8 h-8 text-purple-600" />
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-800 flex items-center gap-2">
+                            <Calendar className="w-7 h-7 text-purple-600" />
                             새 이벤트 만들기
                         </h1>
-                        <p className="text-gray-600 mt-1">그룹의 가능한 날짜를 찾아보세요</p>
                     </div>
                 </div>
 
@@ -81,7 +80,7 @@ export default function CreateEvent() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Event Title */}
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
                             이벤트 제목
                         </label>
                         <input
@@ -89,15 +88,15 @@ export default function CreateEvent() {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="예: 팀 회식 날짜 정하기"
-                            className="w-full px-4 py-3 bg-white/70 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                            className="w-full px-4 py-4 bg-white/70 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all placeholder:text-gray-400 text-lg shadow-sm"
                             required
                         />
                     </div>
 
                     {/* Date Range */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-5">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
                                 시작 날짜
                             </label>
                             <input
@@ -105,12 +104,12 @@ export default function CreateEvent() {
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
                                 min={today}
-                                className="w-full px-4 py-3 bg-white/70 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                                className="w-full px-4 py-4 bg-white/70 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all text-lg shadow-sm appearance-none"
                                 required
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">
                                 종료 날짜
                             </label>
                             <input
@@ -118,17 +117,16 @@ export default function CreateEvent() {
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
                                 min={startDate || today}
-                                className="w-full px-4 py-3 bg-white/70 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all"
+                                className="w-full px-4 py-4 bg-white/70 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all text-lg shadow-sm appearance-none"
                                 required
                             />
                         </div>
                     </div>
 
                     {/* Info Box */}
-                    <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
-                        <p className="text-sm text-purple-800">
-                            💡 <strong>팁:</strong> 이벤트를 생성하면 고유 링크가 만들어집니다.
-                            링크를 공유하여 사람들이 투표할 수 있게 해보세요!
+                    <div className="bg-purple-50/50 border border-purple-100 rounded-2xl p-4">
+                        <p className="text-sm text-purple-900 leading-relaxed">
+                            💡 <strong>투표 방식:</strong> 기간을 설정하면 달력이 생성됩니다. 친구들은 로그인 없이 이름만 입력하고 투표할 수 있어요!
                         </p>
                     </div>
 
@@ -136,7 +134,7 @@ export default function CreateEvent() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="btn-gradient w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="btn-gradient w-full py-4 text-lg mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isLoading ? '생성 중...' : '이벤트 생성하기 🚀'}
                     </button>

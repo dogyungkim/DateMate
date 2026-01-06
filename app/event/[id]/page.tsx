@@ -79,8 +79,8 @@ export default function EventPage() {
     });
 
     return (
-        <div className="min-h-screen p-4 py-8">
-            <div className="max-w-6xl mx-auto space-y-6">
+        <div className="min-h-screen py-6 px-3 sm:p-8">
+            <div className="max-w-md mx-auto space-y-4">
                 <EventHeader
                     event={event}
                     votes={votes}

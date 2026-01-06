@@ -45,6 +45,7 @@ body {
   color: hsl(var(--foreground));
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
+  @apply antialiased;
 }
 
 @layer utilities {
@@ -60,12 +61,12 @@ body {
 
 /* Glass morphism card */
 .glass-card {
-  @apply bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20;
+  @apply bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 px-5 py-6 sm:p-8;
 }
 
 /* Date cell hover effect */
 .date-cell {
-  @apply relative cursor-pointer rounded-lg p-3 transition-all duration-200 hover:scale-105;
+  @apply relative cursor-pointer rounded-xl p-2 transition-all duration-200 hover:scale-105 active:scale-90;
 }
 
 .date-cell.selected {
