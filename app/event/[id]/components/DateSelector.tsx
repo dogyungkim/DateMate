@@ -55,45 +55,74 @@ export default function DateSelector({
         }
     };
 
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+
     return (
         <div className="space-y-6 select-none">
             <label className="block text-sm font-bold text-gray-700 mb-1">
                 가능한 날짜 선택 (드래그 가능)
             </label>
 
-            {Object.entries(groupedDates).map(([month, dates]) => (
-                <div key={month} className="space-y-3">
-                    <h3 className="text-lg font-bold text-purple-700 border-b border-purple-100 pb-1 mt-4">
-                        {month}
-                    </h3>
-                    <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 gap-2">
-                        {dates.map((date) => {
-                            const dateStr = format(date, 'yyyy-MM-dd');
-                            const isSelected = selectedDates.has(dateStr);
-                            const voteCount = votes.filter((v) => v.available_date === dateStr).length;
+            {Object.entries(groupedDates).map(([month, dates]) => {
+                // Get the day of the week for the first date in this group (0-6)
+                const startDay = dates[0].getDay();
 
-                            return (
-                                <div
-                                    key={dateStr}
-                                    onMouseDown={() => handleMouseDown(dateStr, isSelected)}
-                                    onMouseEnter={() => handleMouseEnter(dateStr, isSelected)}
-                                    className={`date-cell ${isSelected ? 'selected' : 'unselected'} touch-none`}
-                                >
-                                    <div className="text-center pointer-events-none">
-                                        <p className="text-[10px] opacity-70 leading-none mb-1">
-                                            {format(date, 'EEE', { locale: ko })}
-                                        </p>
-                                        <p className="text-base font-bold leading-none">{format(date, 'd')}</p>
-                                        {voteCount > 0 && (
-                                            <p className="text-[10px] mt-1 opacity-80 font-medium">{voteCount}명</p>
-                                        )}
-                                    </div>
+                return (
+                    <div key={month} className="space-y-3">
+                        <h3 className="text-lg font-bold text-purple-700 border-b border-purple-100 pb-1 mt-4">
+                            {month}
+                        </h3>
+
+                        {/* Weekday Header */}
+                        <div className="grid grid-cols-7 gap-1 mb-1">
+                            {weekdays.map((day, i) => (
+                                <div key={day} className={`text-center text-[10px] font-bold ${i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : 'text-gray-400'}`}>
+                                    {day}
                                 </div>
-                            );
-                        })}
+                            ))}
+                        </div>
+
+                        <div className="grid grid-cols-7 gap-1">
+                            {/* Empty cells for padding */}
+                            {Array.from({ length: startDay }).map((_, i) => (
+                                <div key={`empty-${i}`} className="aspect-square" />
+                            ))}
+
+                            {dates.map((date) => {
+                                const dateStr = format(date, 'yyyy-MM-dd');
+                                const isSelected = selectedDates.has(dateStr);
+                                const voteCount = votes.filter((v) => v.available_date === dateStr).length;
+                                const dayOfWeek = date.getDay();
+
+                                return (
+                                    <div
+                                        key={dateStr}
+                                        onMouseDown={() => handleMouseDown(dateStr, isSelected)}
+                                        onMouseEnter={() => handleMouseEnter(dateStr, isSelected)}
+                                        className={`date-cell aspect-square flex items-center justify-center ${isSelected ? 'selected' : 'unselected'} touch-none`}
+                                    >
+                                        <div className="text-center pointer-events-none">
+                                            <p className={`text-sm font-bold leading-none ${isSelected ? 'text-white' :
+                                                    dayOfWeek === 0 ? 'text-red-500' :
+                                                        dayOfWeek === 6 ? 'text-blue-500' :
+                                                            'text-gray-800'
+                                                }`}>
+                                                {format(date, 'd')}
+                                            </p>
+                                            {voteCount > 0 && (
+                                                <p className={`text-[8px] mt-0.5 leading-none font-medium ${isSelected ? 'text-white/90' : 'text-purple-600'}`}>
+                                                    {voteCount}명
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
+
 }
