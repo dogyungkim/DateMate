@@ -38,7 +38,10 @@ export default function DateSelector({
         return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
     }, []);
 
-    const handleMouseDown = (dateStr: string, isSelected: boolean) => {
+    const handleMouseDown = (e: React.MouseEvent, dateStr: string, isSelected: boolean) => {
+        // Only enable drag on desktop (not touch devices)
+        if (e.type !== 'mousedown') return;
+        
         setIsDragging(true);
         const mode = isSelected ? 'deselect' : 'select';
         setDragMode(mode);
@@ -51,6 +54,13 @@ export default function DateSelector({
         if (dragMode === 'select' && !isSelected) {
             onDateToggle(dateStr);
         } else if (dragMode === 'deselect' && isSelected) {
+            onDateToggle(dateStr);
+        }
+    };
+
+    const handleClick = (dateStr: string) => {
+        // Simple click toggle for touch devices
+        if (!isDragging) {
             onDateToggle(dateStr);
         }
     };
@@ -97,9 +107,10 @@ export default function DateSelector({
                                 return (
                                     <div
                                         key={dateStr}
-                                        onMouseDown={() => handleMouseDown(dateStr, isSelected)}
+                                        onMouseDown={(e) => handleMouseDown(e, dateStr, isSelected)}
                                         onMouseEnter={() => handleMouseEnter(dateStr, isSelected)}
-                                        className={`date-cell aspect-square flex items-center justify-center ${isSelected ? 'selected' : 'unselected'} touch-none`}
+                                        onClick={() => handleClick(dateStr)}
+                                        className={`date-cell aspect-square flex items-center justify-center ${isSelected ? 'selected' : 'unselected'} cursor-pointer`}
                                     >
                                         <div className="text-center pointer-events-none">
                                             <p className={`text-sm font-bold leading-none ${isSelected ? 'text-white' :
