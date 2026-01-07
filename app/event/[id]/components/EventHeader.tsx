@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { Calendar, Users, Share2, ArrowLeft, Check } from 'lucide-react';
+import { Calendar, Users, Share2, ArrowLeft, Check, BarChart3 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { type Event, type Vote } from '@/lib/supabase';
@@ -35,35 +35,45 @@ export default function EventHeader({
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-gray-100 pt-4">
-                    <div className="flex gap-4">
-                        <div className="flex items-center gap-1.5">
-                            <Users className="w-4 h-4 text-purple-600" />
-                            <span className="text-xs text-gray-600">
-                                <strong>{participants.size}명</strong> 참여
-                            </span>
+                <div className="border-t border-gray-100 pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                        <div className="flex gap-4">
+                            <div className="flex items-center gap-1.5">
+                                <Users className="w-4 h-4 text-purple-600" />
+                                <span className="text-xs text-gray-600">
+                                    <strong>{participants.size}명</strong> 참여
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <Calendar className="w-4 h-4 text-indigo-600" />
+                                <span className="text-xs text-gray-600">
+                                    <strong>{allDatesCount}일</strong> 후보
+                                </span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-1.5">
-                            <Calendar className="w-4 h-4 text-indigo-600" />
-                            <span className="text-xs text-gray-600">
-                                <strong>{allDatesCount}일</strong> 후보
-                            </span>
-                        </div>
+
+                        <button
+                            onClick={onCopyLink}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all font-bold text-sm shadow-sm ${copied
+                                    ? 'bg-green-50 text-green-600 border border-green-200'
+                                    : 'bg-white text-purple-600 border border-purple-100'
+                                }`}
+                        >
+                            {copied ? (
+                                <Check className="w-4 h-4" />
+                            ) : (
+                                <Share2 className="w-4 h-4" />
+                            )}
+                            {copied ? '복사됨' : '공유'}
+                        </button>
                     </div>
 
                     <button
-                        onClick={onCopyLink}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all font-bold text-sm shadow-sm ${copied
-                                ? 'bg-green-50 text-green-600 border border-green-200'
-                                : 'bg-white text-purple-600 border border-purple-100'
-                            }`}
+                        onClick={() => router.push(`/event/${event.id}/results`)}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm"
                     >
-                        {copied ? (
-                            <Check className="w-4 h-4" />
-                        ) : (
-                            <Share2 className="w-4 h-4" />
-                        )}
-                        {copied ? '복사됨' : '공유'}
+                        <BarChart3 className="w-4 h-4" />
+                        상세 투표 결과 보기
                     </button>
                 </div>
             </div>
